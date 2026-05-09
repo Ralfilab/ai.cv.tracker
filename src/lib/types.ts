@@ -17,6 +17,7 @@ export type Job = {
   id: string;
   title: string;
   company: string;
+  companyUrl?: string;
   description: string;
   status: JobStatus;
   createdAt: string;
@@ -30,6 +31,9 @@ export type CreateJobInput = {
   title: string;
   company: string;
   description: string;
+  companyUrl?: string;
 };
 
-export type UpdateJobInput = Partial<Pick<Job, "status" | "matchReport" | "optimisedCv" | "coverLetter">>;
+export type UpdateJobInput = Partial<
+  Pick<Job, "status" | "matchReport" | "optimisedCv" | "coverLetter" | "companyUrl">
+>;

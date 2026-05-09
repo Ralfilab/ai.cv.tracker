@@ -10,6 +10,7 @@ interface JobRow {
   id: string;
   title: string;
   company: string;
+  company_url: string | null;
   description: string;
   status: string;
   created_at: string;
@@ -24,6 +25,7 @@ function rowToJob(row: JobRow): Job {
     id: row.id,
     title: row.title,
     company: row.company,
+    ...(row.company_url ? { companyUrl: row.company_url } : {}),
     description: row.description,
     status: row.status as Job["status"],
     createdAt: row.created_at,
@@ -38,9 +40,13 @@ function rowToJob(row: JobRow): Job {
 // Jobs
 // ---------------------------------------------------------------------------
 
-export async function readJobs(): Promise<Job[]> {
+export async function readJobs(status?: Job["status"]): Promise<Job[]> {
   const db = getDb();
-  const rows = db.prepare("SELECT * FROM jobs ORDER BY created_at DESC").all() as JobRow[];
+  const rows = status
+    ? (db
+        .prepare("SELECT * FROM jobs WHERE status = ? ORDER BY created_at DESC")
+        .all(status) as JobRow[])
+    : (db.prepare("SELECT * FROM jobs ORDER BY created_at DESC").all() as JobRow[]);
   return rows.map(rowToJob);
 }
 
@@ -50,9 +56,17 @@ export async function createJob(input: CreateJobInput): Promise<Job> {
   const id = randomUUID();
 
   db.prepare(
-    `INSERT INTO jobs (id, title, company, description, status, created_at, updated_at)
-     VALUES (?, ?, ?, ?, 'pending', ?, ?)`,
-  ).run(id, input.title.trim(), input.company.trim(), input.description.trim(), now, now);
+    `INSERT INTO jobs (id, title, company, company_url, description, status, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, 'pending', ?, ?)`,
+  ).run(
+    id,
+    input.title.trim(),
+    input.company.trim(),
+    input.companyUrl?.trim() || null,
+    input.description.trim(),
+    now,
+    now,
+  );
 
   return (await getJob(id))!;
 }
@@ -92,6 +106,11 @@ export async function updateJob(id: string, input: UpdateJobInput): Promise<Job 
   if (input.coverLetter !== undefined) {
     sets.push("cover_letter = ?");
     values.push(input.coverLetter);
+  }
+
+  if (input.companyUrl !== undefined) {
+    sets.push("company_url = ?");
+    values.push(input.companyUrl || null);
   }
 
   values.push(id);

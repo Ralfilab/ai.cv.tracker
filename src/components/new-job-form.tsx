@@ -21,6 +21,7 @@ export function NewJobForm() {
         title: formData.get("title"),
         company: formData.get("company"),
         description: formData.get("description"),
+        companyUrl: formData.get("companyUrl"),
       }),
     });
 
@@ -52,6 +53,14 @@ export function NewJobForm() {
           <input
             name="company"
             placeholder="Company name"
+            className="rounded-xl border border-zinc-200 px-4 py-3 text-zinc-900 outline-none transition focus:border-zinc-400"
+          />
+        </label>
+        <label className="flex flex-col gap-2 text-sm font-medium text-zinc-700">
+          Company website (optional)
+          <input
+            name="companyUrl"
+            placeholder="https://company.com"
             className="rounded-xl border border-zinc-200 px-4 py-3 text-zinc-900 outline-none transition focus:border-zinc-400"
           />
         </label>

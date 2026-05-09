@@ -27,6 +27,7 @@ function migrate(db: Database.Database) {
       id           TEXT PRIMARY KEY,
       title        TEXT NOT NULL,
       company      TEXT NOT NULL DEFAULT '',
+      company_url  TEXT,
       description  TEXT NOT NULL,
       status       TEXT NOT NULL DEFAULT 'pending',
       created_at   TEXT NOT NULL,
@@ -39,4 +40,10 @@ function migrate(db: Database.Database) {
     INSERT OR IGNORE INTO config (key, value) VALUES ('cv', '# Your Base CV
 ');
   `);
+
+  // Backfill migration: add company_url if missing on existing databases
+  const cols = db.prepare("PRAGMA table_info(jobs)").all() as Array<{ name: string }>;
+  if (!cols.some((c) => c.name === "company_url")) {
+    db.exec("ALTER TABLE jobs ADD COLUMN company_url TEXT");
+  }
 }

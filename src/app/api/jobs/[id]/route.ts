@@ -45,6 +45,10 @@ export async function PATCH(request: Request, context: RouteContext) {
     input.coverLetter = body.coverLetter;
   }
 
+  if ("companyUrl" in body) {
+    input.companyUrl = body.companyUrl;
+  }
+
   const job = await updateJob(id, input);
 
   if (!job) {

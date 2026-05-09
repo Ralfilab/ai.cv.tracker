@@ -89,7 +89,12 @@ export default async function JobPage({ params }: JobPageProps) {
         </aside>
 
         <div className="space-y-6">
-          <EditableCoverLetter jobId={job.id} coverLetter={job.coverLetter} editable={job.status === "to-apply"} />
+          <EditableCoverLetter
+            jobId={job.id}
+            coverLetter={job.coverLetter}
+            editable={job.status === "to-apply" || job.status === "pending"}
+            companyUrl={job.companyUrl}
+          />
 
           {report ? (
             <section className="grid gap-6 lg:grid-cols-2">
@@ -117,7 +122,7 @@ export default async function JobPage({ params }: JobPageProps) {
               <h2 className="font-semibold">Base CV</h2>
               <pre className="mt-4 max-h-[760px] overflow-auto whitespace-pre-wrap rounded-2xl bg-zinc-50 p-5 text-sm leading-6 text-zinc-700">{baseCv}</pre>
             </div>
-            <EditableCv jobId={job.id} optimisedCv={job.optimisedCv} editable={job.status === "to-apply"} />
+            <EditableCv jobId={job.id} optimisedCv={job.optimisedCv} editable={job.status === "to-apply" || job.status === "pending"} />
           </section>
 
           <section className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
