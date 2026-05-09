@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { getJob, updateJob } from "@/lib/store";
+import { jobStatuses } from "@/lib/types";
 import type { JobStatus, UpdateJobInput } from "@/lib/types";
-
-const statuses: JobStatus[] = ["pending", "to-apply", "applied", "interviewing", "rejected"];
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -23,7 +22,7 @@ export async function PATCH(request: Request, context: RouteContext) {
   const { id } = await context.params;
   const body = await request.json();
 
-  if (body.status && !statuses.includes(body.status)) {
+  if (body.status && !jobStatuses.includes(body.status)) {
     return NextResponse.json({ error: "Invalid job status." }, { status: 400 });
   }
 

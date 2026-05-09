@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 import { createJob, readJobs } from "@/lib/store";
+import { jobStatuses } from "@/lib/types";
 import type { JobStatus } from "@/lib/types";
-
-const statuses: JobStatus[] = ["pending", "to-apply", "applied", "interviewing", "rejected"];
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const statusParam = url.searchParams.get("status");
-  const status = statuses.includes(statusParam as JobStatus) ? (statusParam as JobStatus) : undefined;
+  const status = jobStatuses.includes(statusParam as JobStatus) ? (statusParam as JobStatus) : undefined;
   const jobs = await readJobs(status);
   return NextResponse.json(jobs);
 }

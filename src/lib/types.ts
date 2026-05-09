@@ -1,4 +1,6 @@
-export type JobStatus = "pending" | "to-apply" | "applied" | "interviewing" | "rejected";
+export type JobStatus = "pending" | "to-apply" | "applied" | "interviewing" | "lack-of-technical-skills" | "rejected";
+
+export const jobStatuses = ["pending", "to-apply", "applied", "interviewing", "lack-of-technical-skills", "rejected"] satisfies JobStatus[];
 
 export type KeywordReport = {
   matched: string[];

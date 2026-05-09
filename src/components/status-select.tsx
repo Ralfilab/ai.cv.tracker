@@ -2,9 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { jobStatuses } from "@/lib/types";
 import type { JobStatus } from "@/lib/types";
-
-const statuses: JobStatus[] = ["pending", "to-apply", "applied", "interviewing", "rejected"];
 
 export function StatusSelect({ jobId, currentStatus }: { jobId: string; currentStatus: JobStatus }) {
   const router = useRouter();
@@ -33,9 +32,9 @@ export function StatusSelect({ jobId, currentStatus }: { jobId: string; currentS
         onChange={(event) => updateStatus(event.target.value as JobStatus)}
         className="rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-zinc-400"
       >
-        {statuses.map((item) => (
+        {jobStatuses.map((item) => (
           <option key={item} value={item}>
-            {item.replace("-", " ")}
+            {item.replaceAll("-", " ")}
           </option>
         ))}
       </select>
