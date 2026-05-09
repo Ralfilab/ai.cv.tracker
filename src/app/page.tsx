@@ -21,12 +21,20 @@ export default async function Home() {
               Save jobs here, run `/cv-analyze` in Windsurf, then review match scores, keyword gaps, and tailored CV versions.
             </p>
           </div>
-          <Link
-            href="/jobs/new"
-            className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-zinc-200"
-          >
-            Add job
-          </Link>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/cv"
+              className="inline-flex items-center justify-center rounded-2xl border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              Update CV
+            </Link>
+            <Link
+              href="/jobs/new"
+              className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-zinc-200"
+            >
+              Add job
+            </Link>
+          </div>
         </div>
       </section>
 
